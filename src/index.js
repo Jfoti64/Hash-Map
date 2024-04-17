@@ -1,6 +1,5 @@
 import HashMap from './hashMap';
 
-
 const map = new HashMap();
 
 map.set('John', 'Wayne');
@@ -10,7 +9,8 @@ console.log(map);
 
 console.log(map.length());
 
-map.remove('Brad');
+map.clear();
+// map.remove('Brad');
 
 console.log(map.length());
 

@@ -104,6 +104,12 @@ class HashMap {
     });
     return length;
   }
+
+  clear() {
+    this.buckets.fill(null); // Reset all buckets to null
+  }
+
+  
 }
 
 export default HashMap;
