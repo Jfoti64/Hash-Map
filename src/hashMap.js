@@ -66,6 +66,44 @@ class HashMap {
     }
     return false;
   }
+
+  remove(key) {
+    const index = this.hash(key);
+    let currentNode = this.buckets[index];
+
+    if (!currentNode) {
+      return false; // Early return if the bucket is empty
+    }
+
+    let prevNode = null;
+    while (currentNode) {
+      if (currentNode.key === key) {
+        // If it's the first node in the bucket
+        if (!prevNode) {
+          this.buckets[index] = currentNode.next;
+        } else {
+          // Otherwise, bypass the current node
+          prevNode.next = currentNode.next;
+        }
+        return true;
+      }
+      prevNode = currentNode;
+      currentNode = currentNode.next;
+    }
+    return false;
+  }
+
+  length() {
+    let length = 0;
+    this.buckets.forEach((bucket) => {
+      let currentNode = bucket;
+      while (currentNode) {
+        length += 1;
+        currentNode = currentNode.next;
+      }
+    });
+    return length;
+  }
 }
 
 export default HashMap;
