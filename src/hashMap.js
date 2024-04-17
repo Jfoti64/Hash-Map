@@ -121,7 +121,17 @@ class HashMap {
     return keys;
   }
 
-  
+  values() {
+    const values = [];
+    this.buckets.forEach((bucket) => {
+      let currentNode = bucket;
+      while (currentNode) {
+        values.push(currentNode.value);
+        currentNode = currentNode.next;
+      }
+    });
+    return values;
+  }
 }
 
 export default HashMap;

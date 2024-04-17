@@ -13,6 +13,7 @@ console.log(map.length());
 // map.remove('Brad');
 
 console.log(map.keys());
+console.log(map.values());
 
 console.log(map.length());
 
