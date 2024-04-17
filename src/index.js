@@ -9,8 +9,10 @@ console.log(map);
 
 console.log(map.length());
 
-map.clear();
+// map.clear();
 // map.remove('Brad');
+
+console.log(map.keys());
 
 console.log(map.length());
 

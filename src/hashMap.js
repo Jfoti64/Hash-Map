@@ -109,6 +109,18 @@ class HashMap {
     this.buckets.fill(null); // Reset all buckets to null
   }
 
+  keys() {
+    const keys = [];
+    this.buckets.forEach((bucket) => {
+      let currentNode = bucket;
+      while (currentNode) {
+        keys.push(currentNode.key);
+        currentNode = currentNode.next;
+      }
+    });
+    return keys;
+  }
+
   
 }
 
