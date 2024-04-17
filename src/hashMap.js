@@ -3,6 +3,7 @@ import Node from './node';
 class HashMap {
   constructor() {
     this.buckets = Array(31).fill(null);
+    this.size = 0; // Keep track of the total number of entries
   }
 
   hash(key) {
@@ -14,24 +15,74 @@ class HashMap {
     return hashCode;
   }
 
+  resize() {
+    const newBucketsSize = this.findNextPrime(this.buckets.length * 2);
+    const newBuckets = Array(newBucketsSize).fill(null);
+
+    this.buckets.forEach((bucket) => {
+      let currentNode = bucket;
+      while (currentNode) {
+        const index = this.rehash(currentNode.key, newBucketsSize);
+        const newNode = new Node(currentNode.key, currentNode.value);
+        newNode.next = newBuckets[index];
+        newBuckets[index] = newNode;
+        currentNode = currentNode.next;
+      }
+    });
+
+    this.buckets = newBuckets;
+  }
+
+  static rehash(key, newSize) {
+    let hashCode = 0;
+    const primeNumber = 31;
+    for (let i = 0; i < key.length; i += 1) {
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % newSize;
+    }
+    return hashCode;
+  }
+
+  findNextPrime(num) {
+    let candidate = num; // Create a local copy of num
+    while (!this.isPrime(candidate)) {
+      candidate += 1; // Modify the local copy instead of the parameter
+    }
+    return candidate;
+  }
+
+  static isPrime(num) {
+    for (let i = 2; i <= Math.sqrt(num); i += 1) {
+      if (num % i === 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   set(key, value) {
+    if (this.size / this.buckets.length > 0.75) {
+      this.resize();
+    }
+
     const index = this.hash(key);
     const newNode = new Node(key, value);
     let currentNode = this.buckets[index];
 
     if (!currentNode) {
       this.buckets[index] = newNode;
+      this.size += 1;
     } else {
       let prevNode = null;
       while (currentNode) {
         if (currentNode.key === key) {
-          currentNode.value = value; // Update the value if the key matches
+          currentNode.value = value;
           return;
         }
         prevNode = currentNode;
         currentNode = currentNode.next;
       }
-      prevNode.next = newNode; // Add new node at the end of the list
+      prevNode.next = newNode;
+      this.size += 1;
     }
   }
 
@@ -131,6 +182,19 @@ class HashMap {
       }
     });
     return values;
+  }
+
+  entries() {
+    const entries = [];
+    this.buckets.forEach((bucket) => {
+      let currentNode = bucket;
+      while (currentNode) {
+        const innerArray = [currentNode.key, currentNode.value];
+        entries.push(innerArray);
+        currentNode = currentNode.next;
+      }
+    });
+    return entries;
   }
 }
 

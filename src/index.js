@@ -9,12 +9,6 @@ console.log(map);
 
 console.log(map.length());
 
-// map.clear();
-// map.remove('Brad');
-
-console.log(map.keys());
-console.log(map.values());
-
-console.log(map.length());
+console.log(map.entries());
 
 console.log(map.has('Brad'));
